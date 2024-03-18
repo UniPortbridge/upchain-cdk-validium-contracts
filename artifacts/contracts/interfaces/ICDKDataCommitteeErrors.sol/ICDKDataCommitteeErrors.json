@@ -1,0 +1,46 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ICDKDataCommitteeErrors",
+  "sourceName": "contracts/interfaces/ICDKDataCommitteeErrors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "CommitteeAddressDoesntExist",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "EmptyURLNotAllowed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TooManyRequiredSignatures",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "UnexpectedAddrsAndSignaturesSize",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "UnexpectedAddrsBytesLength",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "UnexpectedCommitteeHash",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "WrongAddrOrder",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -1,0 +1,219 @@
+IsTrustedSequencer = true
+ForkUpgradeBatchNumber = 0
+ForkUpgradeNewForkId = 0
+
+[Log]
+Environment = "development" # "production" or "development"
+Level = "debug"
+Outputs = ["stderr"]
+
+[State]
+ChainID = 336655
+AccountQueue = 256 
+	[State.DB]
+	User = "state_user"
+	Password = "state_password"
+	Name = "state_db"
+	Host = "zkevm-state-db"
+	Port = "5432"
+	EnableLog = false	
+	MaxConns = 200
+	[State.Batch]
+		[State.Batch.Constraints]
+		MaxTxsPerBatch = 150
+		MaxBatchBytesSize = 1200000
+		MaxCumulativeGasUsed = 30000000
+		MaxKeccakHashes = 21450
+		MaxPoseidonHashes = 2523570
+		MaxPoseidonPaddings = 1351910
+		MaxMemAligns = 2365850
+		MaxArithmetics = 2365850
+		MaxBinaries = 4731700
+		MaxSteps = 75705380
+
+[Pool]
+IntervalToRefreshBlockedAddresses = "5m"
+IntervalToRefreshGasPrices = "5s"
+MaxTxBytesSize=100132
+MaxTxDataBytesSize=100000
+DefaultMinGasPriceAllowed = 1000000000
+MinAllowedGasPriceInterval = "5m"
+PollMinAllowedGasPriceInterval = "15s"
+AccountQueue = 64
+GlobalQueue = 1024
+	[Pool.DB]
+	User = "pool_user"
+	Password = "pool_password"
+	Name = "pool_db"
+	Host = "zkevm-pool-db"
+	Port = "5432"
+	EnableLog = false
+	MaxConns = 200
+
+[Etherman]
+#URL = "https://goerli.infura.io/v3/7f4b6050fe084651a36e627c8867dcbb"  #layer1 rpc
+URL = "https://rpc.goerli.eth.gateway.fm"
+ForkIDChunkSize = 20000
+MultiGasProvider = false
+L1URL = "https://rpc.ankr.com/eth_goerli"  # for bridge service
+#L1URL = "https://goerli.infura.io/v3/7f4b6050fe084651a36e627c8867dcbb"
+L2URLs = ["http://172.16.58.68:8545"]
+	[Etherman.Etherscan]
+		ApiKey = ""
+
+[EthTxManager]
+FrequencyToMonitorTxs = "1s"
+WaitTxToBeMined = "2m"
+ForcedGas = 249196
+GasPriceMarginFactor = 1
+MaxGasPriceLimit = 0
+PrivateKeys = [
+        {Path = "/pk/sequencer.keystore", Password = "password"},
+        {Path = "/pk/aggregator.keystore", Password = "password"}
+]
+
+[RPC]
+Host = "0.0.0.0"
+Port = 8545
+ReadTimeout = "60s"
+WriteTimeout = "60s"
+MaxRequestsPerIPAndSecond = 500
+SequencerNodeURI = ""
+EnableL2SuggestedGasPricePolling = true
+TraceBatchUseHTTPS = true
+BatchRequestsEnabled = true 
+BatchRequestsLimit = 20
+	[RPC.WebSockets]
+		Enabled = true
+		Host = "0.0.0.0"
+		Port = 8546
+		ReadLimit = 104857600
+
+[Synchronizer]
+SyncInterval = "1s"
+SyncChunkSize = 100
+TrustedSequencerURL = "http://47.236.76.251:8545"
+
+L1SynchronizationMode = "sequential" # "sequential" or "parallel"
+        [Synchronizer.L1ParallelSynchronization]
+                MaxClients = 10
+                MaxPendingNoProcessedBlocks = 25
+                RequestLastBlockPeriod = "5s"
+                RequestLastBlockTimeout = "5s"
+                RequestLastBlockMaxRetries = 3
+                StatisticsPeriod = "5m"
+                TimeoutMainLoop = "5m"
+                RollupInfoRetriesSpacing= "5s"
+                FallbackToSequentialModeOnSynchronized = false
+                [Synchronizer.L1ParallelSynchronization.PerformanceWarning]
+                        AceptableInacctivityTime = "5s"
+                        ApplyAfterNumRollupReceived = 10
+
+
+[Sequencer]
+L2Coinbase = "0x1dAd07eCDe5831Cd57403Cfb79d06b31bB045445"
+WaitPeriodPoolIsEmpty = "1s"
+BlocksAmountForTxsToBeDeleted = 512 
+FrequencyToCheckTxsForDelete = "12h"
+TxLifetimeCheckTimeout = "10m"
+MaxTxLifetime = "6h"
+	[Sequencer.Finalizer]
+		GERDeadlineTimeout = "15s"
+		ForcedBatchDeadlineTimeout = "60s"
+		SleepDuration = "100ms"
+		ResourcePercentageToCloseBatch =25 
+		GERFinalityNumberOfBlocks = 32
+		ClosingSignalsManagerWaitForCheckingL1Timeout = "10s"
+		ClosingSignalsManagerWaitForCheckingGER = "10s"
+		ClosingSignalsManagerWaitForCheckingForcedBatches = "10s"
+		ForcedBatchesFinalityNumberOfBlocks = 64
+		TimestampResolution = "30s"
+		StopSequencerOnBatchNum = 0
+		SequentialReprocessFullBatch = true
+	[Sequencer.DBManager]
+		PoolRetrievalInterval = "500ms"
+		L2ReorgRetrievalInterval = "5s"
+	[Sequencer.EffectiveGasPrice]
+		MaxBreakEvenGasPriceDeviationPercentage = 10
+		L1GasPriceFactor = 0.25
+		ByteGasCost = 16
+		MarginFactor = 1
+		Enabled = false
+
+[SequenceSender]
+WaitPeriodSendSequence = "5s"
+LastBatchVirtualizationTimeMaxWaitPeriod = "5s"
+MaxTxSizeForL1 = 131072
+L2Coinbase = "0x1dAd07eCDe5831Cd57403Cfb79d06b31bB045445"
+PrivateKey = {Path = "/pk/sequencer.keystore", Password = "password"}
+
+[Aggregator]
+Host = "0.0.0.0"
+Port = 50081
+#ForkId = 5
+SenderAddress = "0x56f71f9378C6d1e53723c5C4d3eb57038A9d96F4"
+RetryTime = "5s"
+VerifyProofInterval = "90s"
+TxProfitabilityCheckerType = "acceptall"
+TxProfitabilityMinReward = "1.1"
+ProofStatePollingInterval = "5s"
+CleanupLockedProofsInterval = "2m"
+GeneratingProofCleanupThreshold = "10m"
+
+
+GenerateProofDelay = "2000000000ns"
+
+[L2GasPriceSuggester]
+Type = "follower"
+UpdatePeriod = "10s"
+Factor = 0.05
+DefaultGasPriceWei = 2000000000
+MaxGasPriceWei = 0
+CleanHistoryPeriod = "1h"
+CleanHistoryTimeRetention = "5m"
+
+[MTClient]
+URI = "zkevm-executor:50061"
+
+[Executor]
+URI = "zkevm-executor:50071"
+MaxResourceExhaustedAttempts = 3
+WaitOnResourceExhaustion = "1s"
+MaxGRPCMessageSize = 100000000
+
+[Metrics]
+Host = "0.0.0.0"
+Port = 9091
+Enabled = false
+
+[HashDB]
+User = "prover_user"
+Password = "prover_pass"
+Name = "prover_db"
+Host = "zkevm-state-db"
+Port = "5432"
+EnableLog = false
+MaxConns = 200
+
+[BridgeController]
+Store = "postgres"
+Height = 32
+
+[BridgeServer]
+GRPCPort = "9090"
+HTTPPort = "8080"
+
+[NetworkConfig]
+GenBlockNumber = 10572745   # deploymentBlockNumber from deploy_output.json
+PolygonZkEVMAddress = "0xf68ef650047c96fFF0f1627A8Bc0a7564716008B"    # cdkValidiumAddress from deploy_output.json
+PolygonBridgeAddress = "0xaFb8C88c8c49757E7ADcEFaa069e3CC8E10e271E"   # PolygonZkEVMBridge from deploy_output.json
+PolygonZkEVMGlobalExitRootAddress = "0x3C1410b0c9Bc1517e7BC80C2D75DD9e026A1bf93"   # polygonZkEVMGlobalExitRootAddress from deploy_output.json
+MaticTokenAddress = "0x8b34CB154133f5ba0f654022A61454A3a5c05D6C"    # maticTokenAddress from deploy_output.json
+L2PolygonBridgeAddresses = ["0x680f8fE04E2eC605052354729610A7C183c3d2eF"]  #["0xea21F2569220067eB4Cb3043515Afa9d7c1E0E64"] ##["0x2e6A08c22b391C6cA3cDd1b9A7f920a4d507285a"]         # PolygonZkEVMBridge from genesis.json,using proxy addr?
+L1ChainID = 5               # Goerli chainID
+
+[ClaimTxManager]
+FrequencyToMonitorTxs = "1s"
+PrivateKey = {Path = "/pk/claim.keystore", Password = "password"}
+Enabled = true
+
