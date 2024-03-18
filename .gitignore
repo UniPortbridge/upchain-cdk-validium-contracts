@@ -1,0 +1,10 @@
+./deployment/genesis.json
+./deployment/deploy_parameters.json
+./.idea
+./.openzeppelin
+./cache
+./deployment/deploy/pk/*keystore
+./package-lock.json
+./wallets.txt
+./artifacts
+./node_modules
